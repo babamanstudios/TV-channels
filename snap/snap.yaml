@@ -15,7 +15,10 @@ apps:
       - network
       - desktop
       - desktop-legacy
+      - way land
+      - network-bind
       - x11
+      -opengl
 
 parts:
   babatv:
@@ -25,9 +28,4 @@ parts:
       - tkinter
     stage-packages:
       - mpv
-    install: |
-      mkdir -p $SNAP/bin
-      cp -r * $SNAP/
-      echo '#!/bin/sh' > $SNAP/bin/babatv-launch
-      echo '$SNAP/main.py' >> $SNAP/bin/babatv-launch
-      chmod +x $SNAP/bin/babatv-launch
+
