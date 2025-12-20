@@ -1,16 +1,22 @@
 import subprocess
 import tkinter as tk
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+CHANNELS_FILE = os.path.join(BASE_DIR, "channels_links")
+NAMES_FILE = os.path.join(BASE_DIR, "channel_names")
+
 number = 1
 def channel_selection(channel_number):
-    with open('channels_links', 'r') as file:
+    with open(CHANNELS_FILE, 'r') as file:
         channel_listing = [line.strip() for line in file]
 
     channel = channel_listing[channel_number]
     return channel
 def channel_names(channel_number):
-    with open('channel_names', 'r') as file:
-        channel_names = [line.strip() for line in file]
-    channel = channel_names[channel_number]
+    with open(NAMES_FILE, 'r') as file:
+        channels_names = [line.strip() for line in file]
+    channel = channels_names[channel_number]
     return channel
 def channel_run():
     global number
@@ -45,9 +51,4 @@ button3.place(x=200, y=150)
 notice = tk.Label(window, text='Please do not spam click the start button after  clicking it once,it take time to load')
 notice.place(x=0, y=300)
 window.mainloop()
-
-
-
-window.mainloop()
-
 
