@@ -1,0 +1,33 @@
+name: babatv
+base: core20
+version: '1.0'
+summary: Program streaming tv channels
+description: |
+  A simple Python app to stream live TV channels using mpv and tkinter.
+
+grade: stable
+confinement: strict
+
+apps:
+  babatv:
+    command: bin/babatv-launch
+    plugs:
+      - network
+      - desktop
+      - desktop-legacy
+      - x11
+
+parts:
+  babatv:
+    plugin: python
+    source: .
+    python-packages:
+      - tkinter
+    stage-packages:
+      - mpv
+    install: |
+      mkdir -p $SNAP/bin
+      cp -r * $SNAP/
+      echo '#!/bin/sh' > $SNAP/bin/babatv-launch
+      echo '$SNAP/main.py' >> $SNAP/bin/babatv-launch
+      chmod +x $SNAP/bin/babatv-launch
