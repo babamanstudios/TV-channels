@@ -1,0 +1,46 @@
+name: babatv
+base: core22
+version: '1.0'
+summary: Program streaming TV channels
+description: |
+  A simple Python app to stream live TV channels using mpv and tkinter.
+grade: stable
+confinement: classic              # ← This fixes Tkinter forever
+architectures:
+  - arm64
+
+apps:
+  babatv:
+    command: babatv-wrapper
+    plugs:
+      - network
+      - network-bind
+      - desktop
+      - desktop-legacy
+      - wayland
+      - x11
+      - opengl
+      - audio-playback
+      - audio-record
+
+parts:
+  babatv:
+    plugin: dump
+    source: https://github.com/babamanstudios/TV-channels.git
+    stage-packages:
+      - python3
+      - python3-tk
+      - tcl
+      - tk
+      - mpv
+      - libmpv1
+      - libglu1-mesa
+      - freeglut3
+    override-prime: |
+      snapcraftctl prime
+      mkdir -p $SNAPCRAFT_PRIME
+      cat << 'EOF' > $SNAPCRAFT_PRIME/babatv-wrapper
+      #!/bin/sh
+      exec python3 "$SNAP/main.py" "$@"
+      EOF
+      chmod +x $SNAPCRAFT_PRIME/babatv-wrapper
