@@ -1,17 +1,23 @@
-name: babatv-channels
+name: babatv
 base: core22
 version: '1.0'
 summary: Program streaming TV channels
 description: |
   A simple Python app to stream live TV channels using mpv and tkinter.
+
 grade: stable
-confinement: classic              # ← This fixes Tkinter forever
+confinement: strict              
+
 architectures:
   - arm64
 
 apps:
   babatv:
-    command: babatv-wrapper
+    command: bin/babatv
+    environment:
+      PYTHONPATH: $SNAP/usr/lib/python3/dist-packages:$PYTHONPATH
+      LD_LIBRARY_PATH: $SNAP/usr/lib:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$LD_LIBRARY_PATH
+      MPLBACKEND: TkAgg
     plugs:
       - network
       - network-bind
@@ -21,26 +27,25 @@ apps:
       - x11
       - opengl
       - audio-playback
-      - audio-record
 
 parts:
   babatv:
-    plugin: dump
+    plugin: python
     source: https://github.com/babamanstudios/TV-channels.git
+    python-packages:
+      - youtube_dl   # or yt-dlp if you use it
     stage-packages:
-      - python3
+      - mpv
+      - libmpv1
       - python3-tk
       - tcl
       - tk
-      - mpv
-      - libmpv1
-      - libglu1-mesa
-      - freeglut3
-    override-prime: |
-      snapcraftctl prime
-      mkdir -p $SNAPCRAFT_PRIME
-      cat << 'EOF' > $SNAPCRAFT_PRIME/babatv-wrapper
+    override-build: |
+      sed -i '1i#!/usr/bin/env python3' main.py
+      chmod +x main.py
+      mkdir -p $SNAPCRAFT_PART_INSTALL/bin
+      cat <<EOF > $SNAPCRAFT_PART_INSTALL/bin/babatv
       #!/bin/sh
-      exec python3 "$SNAP/main.py" "$@"
+      exec python3 "$SNAP/main.py"
       EOF
-      chmod +x $SNAPCRAFT_PRIME/babatv-wrapper
+      chmod +x $SNAPCRAFT_PART_INSTALL/bin/babatv
