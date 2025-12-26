@@ -15,6 +15,7 @@ apps:
   babatv:
     command: bin/babatv
     icon: meta/gui/Baba-TV-icon.png
+    desktop: gui/babatv.desktop
     environment:
       PYTHONPATH: $SNAP/usr/lib/python3/dist-packages:$PYTHONPATH
       LD_LIBRARY_PATH: $SNAP/usr/lib:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$LD_LIBRARY_PATH
@@ -34,7 +35,7 @@ parts:
     plugin: python
     source: https://github.com/babamanstudios/TV-channels.git
     python-packages:
-      - youtube_dl   # or yt-dlp if you use it
+      - yt-dlp   # or yt-dlp if you use it
     stage-packages:
       - mpv
       - libmpv1
