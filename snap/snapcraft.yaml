@@ -14,6 +14,7 @@ architectures:
 apps:
   babatv:
     command: bin/babatv
+    icon: meta/gui/Baba-TV-icon.png
     environment:
       PYTHONPATH: $SNAP/usr/lib/python3/dist-packages:$PYTHONPATH
       LD_LIBRARY_PATH: $SNAP/usr/lib:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$LD_LIBRARY_PATH
